@@ -24,3 +24,11 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+:lang(ar),
+[dir='rtl'],
+.arabic-text {
+  direction: rtl;
+  unicode-bidi: isolate;
+  text-align: right;
+}
