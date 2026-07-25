@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import { Mail, ArrowLeft, Loader2, Shield, CheckCircle, Sparkles } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';

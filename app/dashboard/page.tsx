@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import { useAuth } from '@/contexts/AuthContext';
 import { useProgress } from '@/contexts/ProgressContext';
 import {
@@ -63,7 +63,7 @@ function getMotivation(hour: number) {
 }
 
 // ─── Sub-components ──────────────────────────────────────
-const fade = { hidden: { opacity: 20, y: 18 }, visible: (i=0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, type: 'spring', stiffness: 90 } }) };
+const fade: Variants = { hidden: { opacity: 0, y: 18 }, visible: (i=0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, type: 'spring', stiffness: 90 } }) };
 
 function StatCard({ icon: Icon, label, value, suffix, color }: { icon: React.ElementType; label: string; value: string | number; suffix?: string; color: string }) {
   return (

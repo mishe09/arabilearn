@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, Loader2, Crown, User, Check, Zap, Sparkles, Rocket } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';

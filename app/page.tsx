@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, Loader2, Crown, Star, BookOpen, TrendingUp } from 'lucide-react';
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
@@ -88,7 +88,7 @@ export default function LoginPage() {
 
           {/* Main Headline - 3 Languages */}
           <motion.h1
-            initial={{ opacity: 20, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="mb-4 text-4xl font-bold text-amber-300 md:text-5xl lg:text-6xl"
@@ -100,7 +100,7 @@ export default function LoginPage() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 20, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mb-8 text-lg text-amber-100/90 md:text-xl"
@@ -110,7 +110,7 @@ export default function LoginPage() {
 
           {/* Features */}
           <motion.div
-            initial={{ opacity: 20, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mb-8 space-y-4"
@@ -131,7 +131,7 @@ export default function LoginPage() {
 
           {/* Subscription Badge */}
           <motion.div
-            initial={{ opacity: 20, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             className="inline-flex items-center gap-2 rounded-full bg-amber-500/20 px-4 py-2 backdrop-blur-sm"
@@ -152,7 +152,7 @@ export default function LoginPage() {
       {/* RIGHT SIDE - GLASSMORPHISM LOGIN FORM */}
       <div className="relative z-10 flex flex-1 items-center justify-center px-6 py-12 md:px-8 lg:px-12">
         <motion.div
-          initial={{ opacity: 20, x: 30 }}
+          initial={{ opacity: 0, x: 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
           className="w-full max-w-md"
