@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
         
         {/* HEADER SECTION - INSPIRING MESSAGE */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 20, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-8"
@@ -91,7 +91,7 @@ export default function ForgotPasswordPage() {
 
         {/* GLASSMORPHISM FORM BOX */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 20, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >

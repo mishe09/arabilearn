@@ -1,311 +1,3 @@
-// 'use client';
-
-// import { useState, useEffect } from 'react';
-// import Link from 'next/link';
-// import { motion } from 'framer-motion';
-// import { useAuth } from '@/contexts/AuthContext';
-// import { useProgress } from '@/contexts/ProgressContext';
-// import {
-//   Flame,
-//   Star,
-//   CheckCircle2,
-//   BookOpen,
-//   Zap,
-//   Target,
-//   Crown,
-//   Clock,
-//   ArrowRight,
-//   Sparkles,
-//   ChevronRight,
-//   Trophy,
-//   Calendar,
-// } from 'lucide-react';
-
-// const containerVariants = {
-//   hidden: { opacity: 0 },
-//   visible: {
-//     opacity: 1,
-//     transition: { staggerChildren: 0.1 },
-//   },
-// };
-
-// const itemVariants = {
-//   hidden: { y: 20, opacity: 0 },
-//   visible: {
-//     y: 0,
-//     opacity: 1,
-//     transition: { type: 'spring', stiffness: 100 },
-//   },
-// };
-
-// const recentLessons = [
-//   { id: '1', title: 'Basic Greetings', unit: 'Unit 1', time: '2 hours ago', xp: 15, type: '📖' },
-//   { id: '2', title: 'Numbers 1-10', unit: 'Unit 1', time: 'Yesterday', xp: 20, type: '📝' },
-//   { id: '3', title: 'Family Members', unit: 'Unit 2', time: '2 days ago', xp: 18, type: '💬' },
-// ];
-
-// export default function DashboardPage() {
-//   const { user } = useAuth();
-//   const { xp, streak, loading } = useProgress();
-//   const [dailyXp, setDailyXp] = useState(0);
-//   const dailyGoal = 50;
-
-//   useEffect(() => {
-//     const today = new Date().toDateString();
-//     const stored = localStorage.getItem(`daily_xp_${today}`);
-//     setDailyXp(stored ? parseInt(stored, 10) : 32);
-//   }, []);
-
-//   const dailyProgress = Math.min((dailyXp / dailyGoal) * 100, 100);
-//   const currentLevel = Math.floor((xp || 0) / 100) + 1;
-//   const nextLevelXp = currentLevel * 100;
-//   const xpProgress = ((xp || 0) % 100) / 100;
-
-//   if (loading) {
-//     return (
-//       <div className="flex items-center justify-center min-h-[60vh]">
-//         <div className="w-10 h-10 border-4 border-amber-400 border-t-transparent rounded-full animate-spin" />
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <motion.div
-//       variants={containerVariants}
-//       initial="hidden"
-//       animate="visible"
-//       className="space-y-6"
-//     >
-//       {/* Welcome Header */}
-//       <motion.div variants={itemVariants}>
-//         <h1 className="text-2xl lg:text-3xl font-bold text-white">
-//           Welcome back, {user?.displayName || 'Learner'}! 👋
-//         </h1>
-//         <p className="text-amber-200/70 mt-1">
-//           Ready to continue your Arabic journey? You're doing great!
-//         </p>
-//       </motion.div>
-
-//       {/* Stats Row - Glassmorphism Cards */}
-//       <motion.div
-//         variants={itemVariants}
-//         className="grid grid-cols-2 lg:grid-cols-4 gap-4"
-//       >
-//         {[
-//           { label: 'Day Streak', value: streak || 5, icon: Flame, color: 'text-orange-400' },
-//           { label: 'Total XP', value: xp || 250, icon: Star, color: 'text-amber-400' },
-//           { label: 'Completed', value: '4', icon: CheckCircle2, color: 'text-emerald-400' },
-//           { label: 'Level', value: currentLevel, icon: Trophy, color: 'text-amber-400' },
-//         ].map((stat) => {
-//           const Icon = stat.icon;
-//           return (
-//             <div
-//               key={stat.label}
-//               className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-5 transition-all hover:bg-white/15"
-//             >
-//               <div className="flex items-center gap-2 mb-2">
-//                 <Icon className={`h-5 w-5 ${stat.color}`} />
-//                 <span className="text-xs font-medium text-amber-200/70 uppercase tracking-wide">
-//                   {stat.label}
-//                 </span>
-//               </div>
-//               <p className="text-3xl font-bold text-white">
-//                 {stat.value}
-//                 {stat.label === 'Day Streak' && <span className="text-sm ml-1 text-amber-300">days</span>}
-//               </p>
-//             </div>
-//           );
-//         })}
-//       </motion.div>
-
-//       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-//         {/* Main Content - Left 2 cols */}
-//         <div className="lg:col-span-2 space-y-6">
-//           {/* Continue Learning Banner */}
-//           <motion.div variants={itemVariants}>
-//             <Link href="/dashboard/lessons" className="block group">
-//               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-600 to-emerald-800 p-6 transition-all group-hover:shadow-xl group-hover:shadow-emerald-500/30">
-//                 <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400/10 rounded-full blur-3xl -translate-y-20 translate-x-20" />
-//                 <div className="relative z-10">
-//                   <div className="flex items-center gap-2 mb-3">
-//                     <span className="px-3 py-1 bg-amber-400/20 rounded-full text-xs font-medium text-amber-300 backdrop-blur-sm">
-//                       Continue Where You Left Off
-//                     </span>
-//                   </div>
-//                   <h3 className="text-xl lg:text-2xl font-bold text-white mb-2">Numbers 1-10</h3>
-//                   <p className="text-emerald-100 text-sm mb-4 max-w-md">
-//                     Learn to count and use numbers in everyday conversations
-//                   </p>
-//                   <div className="flex items-center gap-4">
-//                     <span className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 rounded-xl text-sm font-medium text-white group-hover:bg-white/30 transition-all">
-//                       Resume Lesson
-//                       <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-//                     </span>
-//                     <span className="text-emerald-200 text-sm flex items-center gap-1">
-//                       <Star className="w-4 h-4" />
-//                       +25 XP
-//                     </span>
-//                   </div>
-//                 </div>
-//               </div>
-//             </Link>
-//           </motion.div>
-
-//           {/* Recent Activity */}
-//           <motion.div variants={itemVariants}>
-//             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-//               <Clock className="h-5 w-5 text-amber-400" />
-//               Recent Activity
-//             </h2>
-//             <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 divide-y divide-white/10">
-//               {recentLessons.map((lesson) => (
-//                 <Link
-//                   key={lesson.id}
-//                   href={`/dashboard/lessons/${lesson.id}`}
-//                   className="flex items-center gap-4 px-5 py-4 hover:bg-white/5 transition-colors group"
-//                 >
-//                   <span className="text-2xl">{lesson.type}</span>
-//                   <div className="flex-1 min-w-0">
-//                     <p className="font-medium text-white group-hover:text-amber-300 transition-colors">
-//                       {lesson.title}
-//                     </p>
-//                     <p className="text-xs text-amber-200/50">
-//                       {lesson.unit} • {lesson.time}
-//                     </p>
-//                   </div>
-//                   <div className="text-right">
-//                     <p className="text-sm font-semibold text-amber-400">+{lesson.xp} XP</p>
-//                   </div>
-//                   <ChevronRight className="w-4 h-4 text-white/30 group-hover:text-amber-400 transition-colors" />
-//                 </Link>
-//               ))}
-//             </div>
-//           </motion.div>
-
-//           {/* Quick Actions */}
-//           <motion.div variants={itemVariants}>
-//             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-//               <Zap className="h-5 w-5 text-amber-400" />
-//               Quick Actions
-//             </h2>
-//             <div className="grid grid-cols-3 gap-3">
-//               {[
-//                 { label: 'Start Learning', icon: Zap, href: '/dashboard/lessons', color: 'bg-emerald-600 hover:bg-emerald-500' },
-//                 { label: 'Daily Review', icon: Calendar, href: '/dashboard/lessons', color: 'bg-amber-600 hover:bg-amber-500' },
-//                 { label: 'Practice', icon: Target, href: '/dashboard/lessons', color: 'bg-indigo-600 hover:bg-indigo-500' },
-//               ].map((action) => {
-//                 const Icon = action.icon;
-//                 return (
-//                   <Link
-//                     key={action.label}
-//                     href={action.href}
-//                     className={`flex flex-col items-center gap-2 rounded-xl p-4 text-white font-medium transition-all active:scale-95 ${action.color}`}
-//                   >
-//                     <Icon className="h-6 w-6" />
-//                     <span className="text-xs">{action.label}</span>
-//                   </Link>
-//                 );
-//               })}
-//             </div>
-//           </motion.div>
-//         </div>
-
-//         {/* Sidebar - Right 1 col */}
-//         <div className="space-y-6">
-//           {/* Daily Goal */}
-//           <motion.div variants={itemVariants}>
-//             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-//               <Target className="h-5 w-5 text-emerald-400" />
-//               Today's Goal
-//             </h2>
-//             <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-6 text-center">
-//               <div className="relative w-28 h-28 mx-auto mb-4">
-//                 <svg className="w-full h-full" viewBox="0 0 120 120">
-//                   <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
-//                   <circle
-//                     cx="60"
-//                     cy="60"
-//                     r="54"
-//                     fill="none"
-//                     stroke="#F59E0B"
-//                     strokeWidth="8"
-//                     strokeLinecap="round"
-//                     strokeDasharray={`${2 * Math.PI * 54}`}
-//                     strokeDashoffset={`${2 * Math.PI * 54 * (1 - dailyProgress / 100)}`}
-//                     className="progress-ring"
-//                   />
-//                 </svg>
-//                 <div className="absolute inset-0 flex items-center justify-center">
-//                   <div>
-//                     <p className="text-2xl font-bold text-white">{dailyXp}</p>
-//                     <p className="text-xs text-amber-300/70">/ {dailyGoal} XP</p>
-//                   </div>
-//                 </div>
-//               </div>
-//               <p className="text-sm text-amber-200/70">
-//                 {dailyProgress >= 100 ? "🎉 Goal achieved! Great job!" : `${Math.round(dailyProgress)}% completed`}
-//               </p>
-//             </div>
-//           </motion.div>
-
-//           {/* Level Progress */}
-//           <motion.div variants={itemVariants}>
-//             <h2 className="text-lg font-semibold text-white mb-3 flex items-center gap-2">
-//               <Trophy className="h-5 w-5 text-amber-400" />
-//               Level {currentLevel}
-//             </h2>
-//             <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-5">
-//               <div className="flex justify-between text-sm mb-2">
-//                 <span className="text-amber-200/70">Progress to Level {currentLevel + 1}</span>
-//                 <span className="text-white font-medium">{xp || 0} / {nextLevelXp} XP</span>
-//               </div>
-//               <div className="w-full h-3 bg-white/10 rounded-full overflow-hidden">
-//                 <motion.div
-//                   className="h-full bg-gradient-to-r from-amber-400 to-orange-500 rounded-full"
-//                   initial={{ width: 0 }}
-//                   animate={{ width: `${xpProgress * 100}%` }}
-//                   transition={{ duration: 1 }}
-//                 />
-//               </div>
-//               <p className="text-xs text-amber-200/50 mt-3 text-center">
-//                 {nextLevelXp - (xp || 0)} XP until next level
-//               </p>
-//             </div>
-//           </motion.div>
-
-//           {/* Premium Upgrade */}
-//           <motion.div variants={itemVariants}>
-//             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 p-6">
-//               <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-16 translate-x-16" />
-//               <div className="relative z-10">
-//                 <div className="flex items-center gap-2 mb-3">
-//                   <Crown className="h-6 w-6 text-white" />
-//                   <span className="text-sm font-semibold uppercase tracking-wider text-white/90">Premium</span>
-//                 </div>
-//                 <p className="text-lg font-bold text-white mb-1">Unlock All Content</p>
-//                 <p className="text-orange-100 text-sm mb-4">
-//                   Get access to all units, advanced lessons, and premium features
-//                 </p>
-//                 <Link
-//                   href="/dashboard/subscription"
-//                   className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-orange-600 font-semibold rounded-xl hover:bg-orange-50 transition-all shadow-lg"
-//                 >
-//                   <Sparkles className="h-4 w-4" />
-//                   Upgrade Now
-//                 </Link>
-//               </div>
-//             </div>
-//           </motion.div>
-//         </div>
-//       </div>
-//     </motion.div>
-//   );
-// }
-
-
-
-
-
 
 'use client';
 
@@ -371,7 +63,7 @@ function getMotivation(hour: number) {
 }
 
 // ─── Sub-components ──────────────────────────────────────
-const fade = { hidden: { opacity: 0, y: 18 }, visible: (i=0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, type: 'spring', stiffness: 90 } }) };
+const fade = { hidden: { opacity: 20, y: 18 }, visible: (i=0) => ({ opacity: 1, y: 0, transition: { delay: i * 0.07, type: 'spring', stiffness: 90 } }) };
 
 function StatCard({ icon: Icon, label, value, suffix, color }: { icon: React.ElementType; label: string; value: string | number; suffix?: string; color: string }) {
   return (
@@ -432,7 +124,7 @@ function RewardCard({ r, i }: { r: Reward; i: number }) {
             <CheckCircle2 className="h-4 w-4" /> Done
           </span>
         ) : (
-          <span className="flex items-center gap-1 text-white/40 text-sm font-semibold">
+          <span className="flex items-center gap-1 te xt-white/40 text-sm font-semibold">
             <Star className="h-3.5 w-3.5" />+{r.xp} XP
           </span>
         )}
@@ -443,8 +135,17 @@ function RewardCard({ r, i }: { r: Reward; i: number }) {
 
 // ─── Main Component ───────────────────────────────────────
 export default function DashboardPage() {
+  console.log("Dashboard rendering");
   const { user } = useAuth();
   const { xp, streak, completedLessons, loading } = useProgress();
+
+  console.log({
+    user,
+    xp,
+    streak,
+    loading,
+    completedLessons,
+  });
 
   const [now, setNow] = useState(new Date());
   const [dailyXp] = useState(32);
@@ -487,6 +188,7 @@ export default function DashboardPage() {
     );
   }
 
+  
   return (
     <motion.div
       initial="hidden"
@@ -803,3 +505,4 @@ export default function DashboardPage() {
     </motion.div>
   );
 }
+

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useProgress } from '@/contexts/ProgressContext';
+import { Variants } from "framer-motion";
 import {
   BookOpen,
   Crown,
@@ -25,12 +26,18 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+const itemVariants: Variants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 100 },
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
   },
 };
 
