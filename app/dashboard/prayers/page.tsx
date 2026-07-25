@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useMemo, useEffect } from 'react';
-import { motion, type Variants } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import {
   Sparkles, Info, Upload, Play, Pause, ChevronDown, Clock,
   CheckCircle2, RotateCcw, Volume2, BookOpen,
