@@ -30,20 +30,45 @@ import {
 import Link from 'next/link';
 import toast from 'react-hot-toast';
 
-const containerVariants = {
+// const containerVariants = {
+//   hidden: { opacity: 0 },
+//   visible: {
+//     opacity: 1,
+//     transition: { staggerChildren: 0.1 },
+//   },
+// };
+
+// const itemVariants = {
+//   hidden: { y: 20, opacity: 0 },
+//   visible: {
+//     y: 0,
+//     opacity: 1,
+//     transition: { type: 'spring', stiffness: 100 },
+//   },
+// };
+
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: {
+      staggerChildren: 0.1,
+    },
   },
 };
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
+const itemVariants: Variants = {
+  hidden: {
+    y: 20,
+    opacity: 0,
+  },
   visible: {
     y: 0,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 100 },
+    transition: {
+      type: "spring" as const,
+      stiffness: 100,
+    },
   },
 };
 
