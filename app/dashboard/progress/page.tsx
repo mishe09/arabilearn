@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { motion, type Variants } from "framer-motion";
-import { useAuth } from '@/contexts/AuthContext';
-import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/context/AuthContext';
+import { useProgress } from '@/context/ProgressContext';
 import { ALL_LESSONS, UNITS } from '@/data/lessons';
 import {
   Trophy,

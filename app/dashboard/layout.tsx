@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/context/AuthContext';
 import {
   Menu,
   X,
@@ -18,6 +18,7 @@ import {
   Flame,
   Sparkles,
   Radio,
+  Languages,
   MoonStar,
 } from 'lucide-react';
 
@@ -28,6 +29,7 @@ const navItems = [
   { href: '/dashboard/profile', label: 'Profile', icon: User },
   { href: '/dashboard/prayers', label: 'Prayers', icon: MoonStar },
   { href: 'https://zeno.fm/radio/hausaarabia-radio/', label: 'Radio', icon: Radio },
+  { href: '/dashboard/translator', label: 'translator', icon: Languages },
 ];
 
 export default function DashboardLayout({

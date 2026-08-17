@@ -1,7 +1,7 @@
 import './globals.css';
 import { Toaster } from 'react-hot-toast';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { ProgressProvider } from '@/contexts/ProgressContext';
+import { AuthProvider } from '@/context/AuthContext';
+import { ProgressProvider } from '@/context/ProgressContext';
 
 export default function RootLayout({
   children,

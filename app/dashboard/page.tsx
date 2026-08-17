@@ -4,8 +4,8 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { motion, type Variants } from "framer-motion";
-import { useAuth } from '@/contexts/AuthContext';
-import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/context/AuthContext';
+import { useProgress } from '@/context/ProgressContext';
 import {
   Flame, Star, CheckCircle2, BookOpen, Zap, Target, Crown, Clock,
   ArrowRight, Sparkles, ChevronRight, Trophy, Calendar, Mic,

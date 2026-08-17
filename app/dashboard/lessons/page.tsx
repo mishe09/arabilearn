@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, type Variants } from "framer-motion";
-import { useAuth } from '@/contexts/AuthContext';
-import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/context/AuthContext';
+import { useProgress } from '@/context/ProgressContext';
 import {
   BookOpen,
   Crown,

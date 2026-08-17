@@ -545,8 +545,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence, type Variants, } from 'framer-motion';
-import { useAuth } from '@/contexts/AuthContext';
-import { useProgress } from '@/contexts/ProgressContext';
+import { useAuth } from '@/context/AuthContext';
+import { useProgress } from '@/context/ProgressContext';
 import {
   Crown, CheckCircle, XCircle, Zap, Sparkles, Star, Shield,
   Award, Gift, ChevronRight, CreditCard, Lock, ArrowRight, Loader2, Quote,
