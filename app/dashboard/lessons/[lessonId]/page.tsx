@@ -1,11 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'next/navigation';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
-import { useProgress } from '@/context/ProgressContext';
 import {
   ArrowLeft,
   Volume2,
@@ -26,6 +24,7 @@ import {
   RefreshCw,
 } from 'lucide-react';
 import { ALL_LESSONS, type Lesson, type QuizQuestion, type AudioExercise, type VocabularyItem } from '@/data/lessons';
+import { createClient } from '@/lib/supabase/client';
 import toast from 'react-hot-toast';
 
 // ─────────────────────────────────────────
@@ -73,62 +72,43 @@ function AudioButton({
     return () => {
       audioRef.current?.pause();
       audioRef.current = null;
+      window.speechSynthesis?.cancel();
     };
   }, []);
 
   const handlePlay = async () => {
-    if (playing) return;
-
-    if (typeof window === 'undefined') return;
+    if (playing || typeof window === 'undefined') return;
 
     window.speechSynthesis?.cancel();
     audioRef.current?.pause();
-
-    // if (audioSrc) {
-    //   const audio = new Audio(audioSrc);
-    //   audioRef.current = audio;
-    //   setPlaying(true);
-
-    //   audio.onended = () => setPlaying(false);
-    //   audio.onerror = () => {
-    //     setPlaying(false);
-    //     toast.error('Recorded audio failed. Using browser audio instead.');
-    //     speakWithBrowser(text, language);
-    //   };
-
-    //   try {
-    //     await audio.play();
-    //   } catch {
-    //     setPlaying(false);
-    //     toast.error('Recorded audio failed. Using browser audio instead.');
-    //     speakWithBrowser(text, language);
-    //   }
-    //   return;
-    // }
-
-    if (audioSrc) {
-  console.log('Audio source being played:', audioSrc);
-
-  const audio = new Audio(audioSrc);
-
-  audio.onerror = () => {
-    console.error('Audio failed to load:', audioSrc);
-    setPlaying(false);
-    speakWithBrowser(text, language);
-  };
-
-  try {
-    await audio.play();
-  } catch (error) {
-    console.error('Audio playback failed:', error);
-    setPlaying(false);
-    speakWithBrowser(text, language);
-  }
-
-  return;
-}
-
     setPlaying(true);
+
+    const cleanAudioSrc = audioSrc?.trim();
+
+    if (cleanAudioSrc) {
+      const audio = new Audio(cleanAudioSrc);
+      audioRef.current = audio;
+
+      audio.onended = () => {
+        setPlaying(false);
+        audioRef.current = null;
+      };
+
+      audio.onerror = () => {
+        console.error('Audio failed to load:', cleanAudioSrc);
+        audioRef.current = null;
+        speakWithBrowser(text, language, () => setPlaying(false));
+      };
+
+      try {
+        await audio.play();
+        return;
+      } catch (error) {
+        console.error('Audio playback failed:', error);
+        audioRef.current = null;
+      }
+    }
+
     speakWithBrowser(text, language, () => setPlaying(false));
   };
 
@@ -137,10 +117,16 @@ function AudioButton({
     md: 'p-2',
     lg: 'p-3',
   };
-  const iconSizes = { sm: 'h-4 w-4', md: 'h-5 w-5', lg: 'h-6 w-6' };
+
+  const iconSizes = {
+    sm: 'h-4 w-4',
+    md: 'h-5 w-5',
+    lg: 'h-6 w-6',
+  };
 
   return (
     <button
+      type="button"
       onClick={handlePlay}
       disabled={playing}
       className={`${sizeClasses[size]} rounded-lg transition-all ${
@@ -151,7 +137,7 @@ function AudioButton({
       title={audioSrc ? 'Play recorded audio' : 'Play browser audio'}
     >
       <Volume2 className={`${iconSizes[size]} ${playing ? 'animate-pulse' : ''}`} />
-{label && <span className="text-xs font-medium">{label}</span>}
+      {label && <span className="text-xs font-medium">{label}</span>}
     </button>
   );
 }
@@ -535,13 +521,14 @@ function QuizModal({
   xpReward,
 }: {
   quiz: QuizQuestion[];
-  onComplete: () => void;
+  onComplete: () => Promise<void>;
   onClose: () => void;
   xpReward: number;
 }) {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(quiz.length).fill(-1));
   const [showResults, setShowResults] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   const currentQuestion = quiz[currentQuestionIndex];
   const hasSelectedAnswer = selectedAnswers[currentQuestionIndex] !== -1;
@@ -559,17 +546,24 @@ function QuizModal({
     else setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const correctCount = selectedAnswers.filter((a, i) => a === quiz[i].correctAnswer).length;
     const pct = (correctCount / quiz.length) * 100;
-    if (pct >= 70) {
-      toast.success(`🎉 You passed! +${xpReward} XP earned`);
-      onComplete();
-    } else {
+
+    if (pct < 70) {
       toast.error(`${correctCount}/${quiz.length} correct. Need 70% to pass. Try again!`);
       setShowResults(false);
       setCurrentQuestionIndex(0);
       setSelectedAnswers(new Array(quiz.length).fill(-1));
+      return;
+    }
+
+    setSubmitting(true);
+
+    try {
+      await onComplete();
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -681,9 +675,10 @@ function QuizModal({
                 ) : (
                   <button
                     onClick={handleSubmit}
-                    className="flex-1 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition"
+                    disabled={submitting}
+                    className="flex-1 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-500 transition disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Claim XP & Continue
+                    {submitting ? 'Saving...' : 'Claim XP & Continue'}
                   </button>
                 )}
                 <button
@@ -703,30 +698,320 @@ function QuizModal({
 
 // ─────────────────────────────────────────
 // Main Lesson Page
+// Same lesson UI as before; Supabase now supplies identity/progress.
 // ─────────────────────────────────────────
+
+type DatabaseLesson = {
+  id: string;
+  content_key: string | null;
+  xp_reward: number;
+};
+
+type LessonProgress = {
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED';
+  progress_percentage: number;
+};
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+const IDLE_AFTER_MS = 2 * 60 * 1000;
+const STUDY_FLUSH_MS = 30 * 1000;
+
 export default function LessonPage() {
   const params = useParams();
-  const { user } = useAuth();
-  const { completedLessons, markLessonComplete } = useProgress();
+  const router = useRouter();
 
-  const lessonId = params.lessonId as string;
-  const lesson: Lesson | undefined = ALL_LESSONS[lessonId];
+  const rawLessonId = params.lessonId;
+  const routeLessonId = Array.isArray(rawLessonId)
+    ? rawLessonId[0]
+    : rawLessonId;
+
+  const [lesson, setLesson] = useState<Lesson | undefined>(undefined);
+  const [databaseLesson, setDatabaseLesson] =
+    useState<DatabaseLesson | null>(null);
 
   const [showQuiz, setShowQuiz] = useState(false);
   const [lessonCompleted, setLessonCompleted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [pageError, setPageError] = useState<string | null>(null);
+
+  const progressStageRef = useRef(10);
+  const lastInteractionAtRef = useRef(Date.now());
+  const pendingStudySecondsRef = useRef(0);
+  const flushInFlightRef = useRef(false);
+
+  const saveProgress = useCallback(
+    async (timeSeconds = 0) => {
+      if (!databaseLesson || lessonCompleted) return;
+
+      const supabase = createClient();
+
+      const { error } = await supabase.rpc('save_lesson_progress', {
+        p_lesson_id: databaseLesson.id,
+        p_progress_percentage: progressStageRef.current,
+        p_last_content_block_id: null,
+        p_time_spent_seconds: timeSeconds,
+      });
+
+      if (error) {
+        throw error;
+      }
+    },
+    [databaseLesson, lessonCompleted],
+  );
+
+  const flushStudyTime = useCallback(async () => {
+    if (
+      !databaseLesson ||
+      flushInFlightRef.current ||
+      pendingStudySecondsRef.current <= 0
+    ) {
+      return;
+    }
+
+    const seconds = pendingStudySecondsRef.current;
+    pendingStudySecondsRef.current = 0;
+    flushInFlightRef.current = true;
+
+    try {
+      const supabase = createClient();
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+
+      const { error: timeError } = await supabase.rpc('record_learning_time', {
+        p_seconds: seconds,
+        p_timezone: timezone,
+      });
+
+      if (timeError) {
+        console.error('Could not record learning time:', timeError);
+        pendingStudySecondsRef.current += seconds;
+        return;
+      }
+
+      if (!lessonCompleted) {
+        try {
+          await saveProgress(seconds);
+        } catch (progressError) {
+          console.error('Could not save lesson study time:', progressError);
+        }
+      }
+    } finally {
+      flushInFlightRef.current = false;
+    }
+  }, [databaseLesson, lessonCompleted, saveProgress]);
+
+  const loadLesson = useCallback(async () => {
+    if (!routeLessonId) {
+      setPageError('Lesson not found.');
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setPageError(null);
+
+    try {
+      const supabase = createClient();
+
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        router.replace('/');
+        return;
+      }
+
+      let query = supabase
+        .from('lessons')
+        .select('id, content_key, xp_reward')
+        .eq('is_published', true);
+
+      query = UUID_RE.test(routeLessonId)
+        ? query.eq('id', routeLessonId)
+        : query.eq('content_key', routeLessonId);
+
+      const { data: lessonRow, error: lessonError } =
+        await query.maybeSingle();
+
+      if (lessonError) {
+        throw lessonError;
+      }
+
+      if (!lessonRow) {
+        throw new Error(
+          'The lesson exists in the app, but it is not connected to a published Supabase lesson yet.',
+        );
+      }
+
+      const dbLesson = lessonRow as DatabaseLesson;
+      const contentKey = dbLesson.content_key ?? routeLessonId;
+      const localLesson = ALL_LESSONS[contentKey];
+
+      if (!localLesson) {
+        throw new Error(
+          `Could not find "${contentKey}" inside data/lessons.ts.`,
+        );
+      }
+
+      const { data: progressRow, error: progressError } = await supabase
+        .from('user_lesson_progress')
+        .select('status, progress_percentage')
+        .eq('user_id', user.id)
+        .eq('lesson_id', dbLesson.id)
+        .maybeSingle();
+
+      if (progressError) {
+        throw progressError;
+      }
+
+      const progress = progressRow as LessonProgress | null;
+      const completed = progress?.status === 'COMPLETED';
+
+      setDatabaseLesson(dbLesson);
+      setLesson(localLesson);
+      setLessonCompleted(completed);
+
+      progressStageRef.current = completed
+        ? 100
+        : Math.max(10, Number(progress?.progress_percentage ?? 0));
+
+      if (!completed) {
+        const { error: startError } = await supabase.rpc(
+          'save_lesson_progress',
+          {
+            p_lesson_id: dbLesson.id,
+            p_progress_percentage: progressStageRef.current,
+            p_last_content_block_id: null,
+            p_time_spent_seconds: 0,
+          },
+        );
+
+        if (startError) {
+          console.error('Could not mark lesson as started:', startError);
+        }
+      }
+    } catch (error) {
+      console.error('Lesson loading failed:', error);
+      setPageError(
+        error instanceof Error ? error.message : 'Could not load this lesson.',
+      );
+    } finally {
+      setLoading(false);
+    }
+  }, [routeLessonId, router]);
 
   useEffect(() => {
-  if (!lesson) {
-    setLoading(false);
-    return;
-  }
+    void loadLesson();
+  }, [loadLesson]);
 
-  setLessonCompleted(completedLessons.includes(lesson.id));
-  setLoading(false);
-}, [lesson, completedLessons]);
+  // Count only active learning time:
+  // visible tab + interaction within the last 2 minutes.
+  useEffect(() => {
+    const markActivity = () => {
+      lastInteractionAtRef.current = Date.now();
+    };
 
-  const isLocked = lesson?.isPremium && !user?.hasPremium;
+    const events: Array<keyof WindowEventMap> = [
+      'mousemove',
+      'mousedown',
+      'keydown',
+      'touchstart',
+      'scroll',
+    ];
+
+    events.forEach((eventName) => {
+      window.addEventListener(eventName, markActivity, { passive: true });
+    });
+
+    const timer = window.setInterval(() => {
+      if (document.visibilityState !== 'visible') return;
+
+      const idleFor = Date.now() - lastInteractionAtRef.current;
+      if (idleFor >= IDLE_AFTER_MS) return;
+
+      pendingStudySecondsRef.current += 1;
+    }, 1000);
+
+    return () => {
+      window.clearInterval(timer);
+
+      events.forEach((eventName) => {
+        window.removeEventListener(eventName, markActivity);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      void flushStudyTime();
+    }, STUDY_FLUSH_MS);
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        void flushStudyTime();
+      } else {
+        lastInteractionAtRef.current = Date.now();
+      }
+    };
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      void flushStudyTime();
+    };
+  }, [flushStudyTime]);
+
+  const openQuiz = async () => {
+    progressStageRef.current = Math.max(progressStageRef.current, 80);
+    setShowQuiz(true);
+
+    try {
+      await saveProgress(0);
+    } catch (error) {
+      console.error('Could not save pre-quiz progress:', error);
+    }
+  };
+
+  const handleComplete = async () => {
+    if (!databaseLesson) return;
+
+    try {
+      await flushStudyTime();
+
+      const supabase = createClient();
+
+      const { data, error } = await supabase.rpc('complete_lesson', {
+        p_lesson_id: databaseLesson.id,
+        p_time_spent_seconds: 0,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      const result = Array.isArray(data) ? data[0] : data;
+      const xpAwarded = Number(result?.xp_awarded ?? 0);
+
+      progressStageRef.current = 100;
+      setLessonCompleted(true);
+      setShowQuiz(false);
+
+      toast.success(
+        xpAwarded > 0
+          ? `🎉 Lesson complete! +${xpAwarded} XP`
+          : '🎉 Lesson complete!',
+      );
+    } catch (error) {
+      console.error('Could not complete lesson:', error);
+      toast.error('Could not save lesson completion. Please try again.');
+      throw error;
+    }
+  };
 
   if (loading) {
     return (
@@ -736,11 +1021,13 @@ export default function LessonPage() {
     );
   }
 
-  if (!lesson) {
+  if (pageError || !lesson || !databaseLesson) {
     return (
       <div className="text-center py-20">
         <h1 className="text-2xl font-bold text-white">Lesson Not Found</h1>
-        <p className="text-amber-200/70 mt-2">The lesson you're looking for doesn't exist.</p>
+        <p className="text-amber-200/70 mt-2">
+          {pageError ?? "The lesson you're looking for doesn't exist."}
+        </p>
         <Link
           href="/dashboard/lessons"
           className="inline-flex items-center gap-2 mt-6 px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-500 transition"
@@ -750,6 +1037,9 @@ export default function LessonPage() {
       </div>
     );
   }
+
+  // Keep your original premium screen/behaviour.
+  const isLocked = lesson.isPremium;
 
   if (isLocked) {
     return (
@@ -779,13 +1069,6 @@ export default function LessonPage() {
     );
   }
 
-  const handleComplete = () => {
-    markLessonComplete(lesson.id, lesson.xpReward);
-    setLessonCompleted(true);
-    setShowQuiz(false);
-    toast.success(`🎉 Lesson complete! +${lesson.xpReward} XP`);
-  };
-
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
@@ -796,28 +1079,35 @@ export default function LessonPage() {
         >
           <ArrowLeft className="h-4 w-4" /> Back to Lessons
         </Link>
+
         <div className="flex items-center gap-2 mb-2">
           <span className="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-xs font-medium">
             {lesson.unitTitle}
           </span>
+
           {lessonCompleted && (
             <span className="px-2.5 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300 text-xs font-medium flex items-center gap-1">
               <CheckCircle className="h-3 w-3" /> Completed
             </span>
           )}
         </div>
-        <h1 className="text-2xl lg:text-3xl font-bold text-white">{lesson.title}</h1>
+
+        <h1 className="text-2xl lg:text-3xl font-bold text-white">
+          {lesson.title}
+        </h1>
+
         <p className="text-amber-200/60 text-sm mt-1">
           {lesson.vocabulary.length} words • {lesson.audioExercises.length} audio exercises • {lesson.quiz.length} quiz questions • {lesson.xpReward} XP
         </p>
       </div>
 
-      {/* Vocabulary Section */}
+      {/* Vocabulary Section — unchanged layout */}
       <div className="rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 p-6 mb-6">
         <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-amber-400" />
           Vocabulary
         </h2>
+
         <div className="space-y-3">
           {lesson.vocabulary.map((word, idx) => (
             <motion.div
@@ -830,51 +1120,69 @@ export default function LessonPage() {
               <div className="flex-1 grid grid-cols-3 gap-2 items-center">
                 <div>
                   <p className="text-base font-bold text-white">{word.hausa}</p>
-                  <p className="text-xs text-amber-300/50 mt-0.5">{word.pronunciation}</p>
+                  <p className="text-xs text-amber-300/50 mt-0.5">
+                    {word.pronunciation}
+                  </p>
                 </div>
+
                 <div className="text-center">
-                  <p className="text-base text-white/80" dir="rtl">{word.arabic}</p>
+                  <p className="text-base text-white/80" dir="rtl">
+                    {word.arabic}
+                  </p>
+                  {word.arabicPronunciation && (
+                    <p className="text-xs text-amber-300/50 mt-0.5">
+                      {word.arabicPronunciation}
+                    </p>
+                  )}
                 </div>
+
                 <div className="text-right">
                   <p className="text-sm text-amber-200/70">{word.english}</p>
                 </div>
               </div>
+
               <div className="flex gap-1.5 shrink-0">
                 <AudioButton
-  text={word.hausa}
-  language="hausa"
-  audioSrc={word.hausaAudioSrc}
-  label="Hausa"
-/>
+                  text={word.hausa}
+                  language="hausa"
+                  audioSrc={word.hausaAudioSrc}
+                  label="Hausa"
+                />
+
                 <AudioButton
-  text={word.arabic}
-  language="arabic"
-  audioSrc={word.arabicAudioSrc}
-  label="Arabic"
-/>
+                  text={word.arabic}
+                  language="arabic"
+                  audioSrc={word.arabicAudioSrc}
+                  label="Arabic"
+                />
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Audio Exercises Section */}
+      {/* Your original interactive Audio Exercises */}
       {lesson.audioExercises && lesson.audioExercises.length > 0 && (
-        <AudioExercisesPanel exercises={lesson.audioExercises} vocabulary={lesson.vocabulary} />
+        <AudioExercisesPanel
+          exercises={lesson.audioExercises}
+          vocabulary={lesson.vocabulary}
+        />
       )}
 
-      
-
-      {/* Quiz CTA */}
+      {/* Quiz CTA — same layout */}
       {!lessonCompleted ? (
         <div className="rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/20 backdrop-blur-sm border border-amber-400/30 p-6 text-center">
           <Trophy className="h-12 w-12 text-amber-400 mx-auto mb-3" />
-          <h3 className="text-xl font-bold text-white mb-2">Ready to Test Your Knowledge?</h3>
+          <h3 className="text-xl font-bold text-white mb-2">
+            Ready to Test Your Knowledge?
+          </h3>
           <p className="text-amber-200/70 mb-4">
-            Complete the quiz to earn {lesson.xpReward} XP and mark this lesson as complete. You need 70% to pass.
+            Complete the quiz to earn {lesson.xpReward} XP and mark this lesson
+            as complete. You need 70% to pass.
           </p>
           <button
-            onClick={() => setShowQuiz(true)}
+            type="button"
+            onClick={() => void openQuiz()}
             className="inline-flex items-center gap-2 px-8 py-3 bg-emerald-600 text-white font-semibold rounded-xl hover:bg-emerald-500 transition shadow-lg"
           >
             Start Quiz <ChevronRight className="h-4 w-4" />
@@ -883,11 +1191,14 @@ export default function LessonPage() {
       ) : (
         <div className="rounded-2xl bg-emerald-500/20 backdrop-blur-sm border border-emerald-400/30 p-6 text-center">
           <CheckCircle className="h-12 w-12 text-emerald-400 mx-auto mb-3" />
-          <h3 className="text-xl font-bold text-white mb-2">Lesson Complete!</h3>
+          <h3 className="text-xl font-bold text-white mb-2">
+            Lesson Complete!
+          </h3>
           <p className="text-emerald-200/70">
-            You've earned {lesson.xpReward} XP for completing this lesson.
+            Your lesson completion is saved in Supabase.
           </p>
           <button
+            type="button"
             onClick={() => setShowQuiz(true)}
             className="mt-4 inline-flex items-center gap-2 px-6 py-2.5 bg-white/10 text-white/70 rounded-xl hover:bg-white/15 transition text-sm"
           >
@@ -896,7 +1207,7 @@ export default function LessonPage() {
         </div>
       )}
 
-      {/* Quiz Modal */}
+      {/* Your original Quiz Modal */}
       <AnimatePresence>
         {showQuiz && (
           <QuizModal
