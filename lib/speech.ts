@@ -82,13 +82,121 @@
 
 
 
+type SpeechLanguage = 'hausa' | 'arabic' | 'Hausa' | 'Arabic' | string;
+
+type SpeakOptions = {
+  rate?: number;
+  pitch?: number;
+  volume?: number;
+  onEnd?: () => void;
+  onError?: (event: SpeechSynthesisErrorEvent) => void;
+};
+
+function normalizeLanguage(language: SpeechLanguage): string {
+  const value = String(language).trim().toLowerCase();
+
+  if (value === 'hausa' || value === 'ha' || value.startsWith('ha-')) {
+    return 'ha-NG';
+  }
+
+  if (value === 'arabic' || value === 'ar' || value.startsWith('ar-')) {
+    return 'ar-SA';
+  }
+
+  return language || 'en-US';
+}
+
+export function speechRecognitionLang(language: SpeechLanguage): string {
+  return normalizeLanguage(language);
+}
+
 export function isSpeechRecognitionSupported(): boolean {
   if (typeof window === 'undefined') {
     return false;
   }
 
-  return (
-    'SpeechRecognition' in window ||
-    'webkitSpeechRecognition' in window
+  return Boolean(
+    window.SpeechRecognition || window.webkitSpeechRecognition
   );
+}
+
+export function getSpeechRecognition(): SpeechRecognition | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  const Recognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  if (!Recognition) {
+    return null;
+  }
+
+  return new Recognition();
+}
+
+export function stopSpeaking(): void {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window)) {
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+}
+
+export function speakWithVoice(
+  text: string,
+  language: SpeechLanguage,
+  optionsOrOnEnd?: SpeakOptions | (() => void),
+): boolean {
+  if (
+    typeof window === 'undefined' ||
+    !('speechSynthesis' in window) ||
+    !text.trim()
+  ) {
+    if (typeof optionsOrOnEnd === 'function') {
+      optionsOrOnEnd();
+    } else {
+      optionsOrOnEnd?.onEnd?.();
+    }
+
+    return false;
+  }
+
+  const options: SpeakOptions =
+    typeof optionsOrOnEnd === 'function'
+      ? { onEnd: optionsOrOnEnd }
+      : optionsOrOnEnd ?? {};
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = normalizeLanguage(language);
+  utterance.rate = options.rate ?? 0.85;
+  utterance.pitch = options.pitch ?? 1;
+  utterance.volume = options.volume ?? 1;
+
+  const voices = window.speechSynthesis.getVoices();
+  const exactVoice = voices.find(
+    (voice) => voice.lang.toLowerCase() === utterance.lang.toLowerCase(),
+  );
+  const languagePrefix = utterance.lang.split('-')[0].toLowerCase();
+  const fallbackVoice = voices.find((voice) =>
+    voice.lang.toLowerCase().startsWith(languagePrefix),
+  );
+
+  if (exactVoice || fallbackVoice) {
+    utterance.voice = exactVoice ?? fallbackVoice ?? null;
+  }
+
+  utterance.onend = () => {
+    options.onEnd?.();
+  };
+
+  utterance.onerror = (event) => {
+    options.onError?.(event);
+  };
+
+  window.speechSynthesis.speak(utterance);
+
+  return true;
 }
