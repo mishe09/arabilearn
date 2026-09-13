@@ -1,112 +1,81 @@
-import type { LanguageCode } from '@/types/translator';
-
-export function isSpeechSynthesisSupported(): boolean {
-  return typeof window !== 'undefined' && 'speechSynthesis' in window;
+interface SpeechRecognitionAlternative {
+  readonly transcript: string;
+  readonly confidence: number;
 }
 
-export function isSpeechRecognitionSupported(): boolean {
-  return (
-    typeof window !== 'undefined' &&
-    ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)
-  );
+interface SpeechRecognitionResult {
+  readonly isFinal: boolean;
+  readonly length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
 }
 
-export function getSpeechRecognition(): { new (): SpeechRecognition } | null {
-  if (typeof window === 'undefined') return null;
-  const w = window as unknown as {
-    SpeechRecognition?: { new (): SpeechRecognition };
-    webkitSpeechRecognition?: { new (): SpeechRecognition };
-  };
-  return w.SpeechRecognition || w.webkitSpeechRecognition || null;
+interface SpeechRecognitionResultList {
+  readonly length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
 }
 
-export function speechRecognitionLang(lang: LanguageCode): string {
-  return lang === 'Arabic' ? 'ar-SA' : 'ha-NG';
+interface SpeechRecognitionEvent extends Event {
+  readonly resultIndex: number;
+  readonly results: SpeechRecognitionResultList;
 }
 
-function loadVoices(): SpeechSynthesisVoice[] {
-  if (!isSpeechSynthesisSupported()) return [];
-  return window.speechSynthesis.getVoices();
+interface SpeechRecognitionErrorEvent extends Event {
+  readonly error: string;
+  readonly message: string;
 }
 
-/**
- * Voices can load asynchronously. Resolves once voices are available (or after a
- * short timeout) so we can pick the best matching voice for the language.
- */
-export function getAvailableVoices(timeoutMs = 1500): Promise<SpeechSynthesisVoice[]> {
-  return new Promise((resolve) => {
-    const synth = window.speechSynthesis;
-    const voices = synth.getVoices();
-    if (voices.length > 0) {
-      resolve(voices);
-      return;
-    }
-    let settled = false;
-    const done = () => {
-      if (settled) return;
-      settled = true;
-      window.removeEventListener('voiceschanged', done);
-      resolve(synth.getVoices());
-    };
-    window.addEventListener('voiceschanged', done);
-    setTimeout(done, timeoutMs);
-  });
+interface SpeechGrammar {
+  src: string;
+  weight: number;
 }
 
-export async function pickVoice(lang: LanguageCode): Promise<SpeechSynthesisVoice | null> {
-  const voices = await getAvailableVoices();
-  if (voices.length === 0) return null;
-  const target = speechRecognitionLang(lang).toLowerCase();
-  const prefix = target.split('-')[0];
-
-  const exact = voices.find((v) => v.lang.toLowerCase() === target);
-  if (exact) return exact;
-  const byPrefix = voices.find((v) => v.lang.toLowerCase().startsWith(prefix));
-  if (byPrefix) return byPrefix;
-  return voices[0] ?? null;
+interface SpeechGrammarList {
+  readonly length: number;
+  item(index: number): SpeechGrammar;
+  addFromString(string: string, weight?: number): void;
+  addFromURI(src: string, weight?: number): void;
+  [index: number]: SpeechGrammar;
 }
 
-export interface SpeakOptions {
-  rate?: number;
-  pitch?: number;
-  onStart?: () => void;
-  onEnd?: () => void;
-  onError?: () => void;
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  grammars: SpeechGrammarList;
+  interimResults: boolean;
+  lang: string;
+  maxAlternatives: number;
+  serviceURI: string;
+
+  onaudiostart: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onaudioend: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onend: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onerror:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => unknown)
+    | null;
+  onnomatch:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => unknown)
+    | null;
+  onresult:
+    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => unknown)
+    | null;
+  onsoundstart: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onsoundend: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onspeechstart: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onspeechend: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+  onstart: ((this: SpeechRecognition, ev: Event) => unknown) | null;
+
+  abort(): void;
+  start(): void;
+  stop(): void;
 }
 
-export async function speakWithVoice(
-  text: string,
-  lang: LanguageCode,
-  options: SpeakOptions = {}
-): Promise<void> {
-  if (!isSpeechSynthesisSupported()) {
-    options.onError?.();
-    return;
-  }
+declare var SpeechRecognition: {
+  prototype: SpeechRecognition;
+  new (): SpeechRecognition;
+};
 
-  const synth = window.speechSynthesis;
-  synth.cancel();
-
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = speechRecognitionLang(lang);
-  utterance.rate = options.rate ?? 1;
-  utterance.pitch = options.pitch ?? 1;
-  utterance.volume = 1;
-
-  const voice = await pickVoice(lang);
-  if (voice) {
-    utterance.voice = voice;
-  }
-
-  utterance.onstart = () => options.onStart?.();
-  utterance.onend = () => options.onEnd?.();
-  utterance.onerror = () => options.onError?.();
-
-  synth.speak(utterance);
-}
-
-export function stopSpeaking(): void {
-  if (isSpeechSynthesisSupported()) {
-    window.speechSynthesis.cancel();
-  }
+interface Window {
+  SpeechRecognition?: typeof SpeechRecognition;
+  webkitSpeechRecognition?: typeof SpeechRecognition;
 }
