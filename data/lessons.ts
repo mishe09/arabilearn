@@ -955,15 +955,7 @@ const greetingsLesson: Lesson = {
     { hausa:'Kana lafiya?',  arabic:'هل أنت بخير؟', english:'Are you fine? (to a male)', pronunciation:'KAH-nah la-FEE-yah', arabicPronunciation:'Hal an-ta bi-khayr', hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/ayf(m).oga',    arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/ayf(m).oga' },
     { hausa:'Kina lafiya?',  arabic:'هل أنت بخير؟', english:'Are you fine? (to a female)',pronunciation:'KEE-nah la-FEE-yah',arabicPronunciation:'Hal an-ti bi-khayr', hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/ayf(f).oga',    arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/ayf(f).oga' },
   ],
-  quiz: [
-    { id:'u1l1q1', question:'What is the Arabic for "Hello"?', options:['شكراً','مرحبا','ليلة سعيدة','إلى اللقاء'], correctAnswer:1, explanation:'"مرحبا" (Mar-ha-ban) = Hello. Hausa: "Sannu".' },
-    { id:'u1l1q2', question:'Which Arabic phrase means "Good morning"?', options:['ليلة سعيدة','إلى الغد','صباح الخير','كيف الحال؟'], correctAnswer:2, explanation:'"صباح الخير" (Sa-baa-hul khayr) = Good morning. Hausa: "Barka da safe".' },
-    { id:'u1l1q3', question:'How do you say "Thank you very much" in Arabic?', options:['شكراً','شكراً جزيلاً','بخير','مرحبا'], correctAnswer:1, explanation:'"شكراً جزيلاً" (Shuk-ran ja-zee-lan) = Thank you very much.' },
-    { id:'u1l1q4', question:'What is the Arabic for "Good night"?', options:['صباح الخير','مرحبا','ليلة سعيدة','شكراً'], correctAnswer:2, explanation:'"ليلة سعيدة" (Lay-la-tan sa-ee-dah) = Good night. Hausa: "Barka da dare".' },
-    { id:'u1l1q5', question:'What does "إلى اللقاء" mean?', options:['See you tomorrow','How are you?','See you later','Good evening'], correctAnswer:2, explanation:'"إلى اللقاء" (I-lal li-qaa) = See you later. Hausa: "Sai anjima".' },
-    { id:'u1l1q6', question:'Which Arabic phrase asks "Are you fine?"', options:['هل أنت بخير؟','ما اسمك؟','كيف الحال؟','صباح الخير'], correctAnswer:0, explanation:'"هل أنت بخير؟" = Are you fine? Hausa: "Kana/Kina lafiya?".' },
-    { id:'u1l1q7', question:'"اسمي ..." means what?', options:['What is your name?','My name is ...','Fine / Well','Thank you'], correctAnswer:1, explanation:'"اسمي ..." (Is-mee) = My name is ... Hausa: "Sunana ...".' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u1l1a1', type:'listen_identify', instruction:'Listen to the Arabic greeting. Select the Arabic word you just heard.', targetWord:'مرحبا', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/marhaba.m4a', hausaAudioSrc:'/audio/hausa/sannu.m4a', options:['شكراً','مرحبا','ليلة سعيدة','إلى اللقاء'], correctAnswer:1 },
     { id:'u1l1a2', type:'listen_identify', instruction:'Listen to the Arabic phrase. Which Arabic phrase did you hear?', targetWord:'صباح الخير', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/sabah-al-khair.m4a', hausaAudioSrc:'/audio/hausa/barka-da-safe.m4a', options:['ليلة سعيدة','إلى اللقاء','صباح الخير','كيف الحال؟'], correctAnswer:2 },
@@ -1004,15 +996,7 @@ const numbersLesson: Lesson = {
     { hausa:"Tis'in",        arabic:'تسعون',  english:'Ninety (90)',      pronunciation:'TIS-in',              arabicPronunciation:'Tis-oon',        hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/90.oga',           arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/90.oga' },
     { hausa:'Dari',          arabic:'مئة',    english:'One Hundred (100)',pronunciation:'DAH-ree',             arabicPronunciation:'Mi-ah',          hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/100.oga',            arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/100.oga' },
   ],
-  quiz: [
-    { id:'u1l2q1', question:'What is the Arabic word for 7?', options:['ستة','سبعة','تسعة','ثمانية'], correctAnswer:1, explanation:'"سبعة" (Sab-a) = 7. Hausa: "Bakwai".' },
-    { id:'u1l2q2', question:'Which Arabic word means "Ten"?', options:['ثلاثة','عشرة','خمسة','واحد'], correctAnswer:1, explanation:'"عشرة" (Ash-a-ra) = 10. Hausa: "Goma".' },
-    { id:'u1l2q3', question:'How do you say 20 in Arabic?', options:['اثنا عشر','ثلاثون','عشرون','مئة'], correctAnswer:2, explanation:'"عشرون" (Ish-roon) = 20. Hausa: "Ashirin".' },
-    { id:'u1l2q4', question:'What does "مئة" mean?', options:['Fifty','Seventy','One Hundred','Thirty'], correctAnswer:2, explanation:'"مئة" (Mi-ah) = 100. Hausa: "Dari".' },
-    { id:'u1l2q5', question:'What is "أحد عشر" in English?', options:['Ten','Twelve','Eleven','Twenty-one'], correctAnswer:2, explanation:'"أحد عشر" (Ah-had ash-ar) = 11. Hausa: "Goma sha daya".' },
-    { id:'u1l2q6', question:'Which Arabic number means 50?', options:['خمسة','خمسون','مئة','أربعون'], correctAnswer:1, explanation:'"خمسون" (Kham-soon) = 50. Hausa: "Hamsin".' },
-    { id:'u1l2q7', question:'What pattern do Arabic teen numbers follow? (e.g. 11)', options:['أحد + عشر','عشرة + واحد','واحد + عشرة','عشرون + واحد'], correctAnswer:0, explanation:'"أحد عشر" = أحد (one) + عشر (ten). Same logic as Hausa "Goma sha daya".' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u1l2a1', type:'listen_identify', instruction:'Listen to the Arabic number. Select the Arabic word you just heard.', targetWord:'سبعة', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/saba.m4a', hausaAudioSrc:'/audio/hausa/bakwai.m4a', options:['ستة','سبعة','ثمانية','تسعة'], correctAnswer:1 },
     { id:'u1l2a2', type:'listen_identify', instruction:'Listen to this Arabic number. Which one did you hear?', targetWord:'عشرة', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/ashara.m4a', hausaAudioSrc:'/audio/hausa/goma.m4a', options:['سبعة','عشرة','اثنا عشر','مئة'], correctAnswer:1 },
@@ -1044,15 +1028,7 @@ const colorsLesson: Lesson = {
     { hausa:'Ruwan inuwa',  arabic:'بني',        english:'Brown',      pronunciation:'ROO-wan ee-NOO-wah',  arabicPronunciation:'Bun-nee',           hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/brown.oga',  arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/brown.oga' },
     { hausa:'Shunayya',     arabic:'بنفسجي',     english:'Purple',     pronunciation:'shoo-NAY-yah',        arabicPronunciation:'Ba-naf-sa-jee',     hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/purple.oga',     arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/purple.oga' },
   ],
-  quiz: [
-    { id:'u1l3q1', question:'What is the Arabic word for Red?', options:['أزرق','أخضر','أحمر','أسود'], correctAnswer:2, explanation:'"أحمر" (Ah-mar) = Red. Hausa: "Ja".' },
-    { id:'u1l3q2', question:'What does "أسود" mean?', options:['White','Gray','Brown','Black'], correctAnswer:3, explanation:'"أسود" (As-wad) = Black. Hausa: "Baƙi".' },
-    { id:'u1l3q3', question:'"أزرق سماوي" in Arabic means what?', options:['Dark blue','Light blue','Navy','Purple'], correctAnswer:1, explanation:'"أزرق سماوي" = Light/sky blue. "سماوي" means sky. Hausa: "Ruwan shuɗi".' },
-    { id:'u1l3q4', question:'What is the Arabic for Purple?', options:['رمادي','وردي','بني','بنفسجي'], correctAnswer:3, explanation:'"بنفسجي" (Ba-naf-sa-jee) = Purple. Hausa: "Shunayya".' },
-    { id:'u1l3q5', question:'What is the Arabic for Green?', options:['أزرق','أخضر','أصفر','أحمر'], correctAnswer:1, explanation:'"أخضر" (Akh-dar) = Green. Hausa: "Kore".' },
-    { id:'u1l3q6', question:'What is "أبيض" in English?', options:['Black','Pink','White','Gray'], correctAnswer:2, explanation:'"أبيض" (Ab-yad) = White. Hausa: "Fari".' },
-    { id:'u1l3q7', question:'What is "وردي" in English?', options:['Orange','Yellow','Pink','Brown'], correctAnswer:2, explanation:'"وردي" (War-dee) = Pink. Hausa: "Ruwan hoda".' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u1l3a1', type:'listen_identify', instruction:'Listen to the Arabic color. Select the Arabic word you heard.', targetWord:'أخضر', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/akhdar.m4a', hausaAudioSrc:'/audio/hausa/kore.m4a', options:['أزرق','أخضر','رمادي','بنفسجي'], correctAnswer:1 },
     { id:'u1l3a2', type:'listen_identify', instruction:'Listen to this Arabic color. Which one did you hear?', targetWord:'أحمر', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/ahmar.m4a', hausaAudioSrc:'/audio/hausa/ja.m4a', options:['أسود','أبيض','أحمر','أصفر'], correctAnswer:2 },
@@ -1092,16 +1068,7 @@ const nounsLesson: Lesson = {
     { hausa:'Wuka',     arabic:'سكين',  english:'Knife',    pronunciation:'WOO-kah',        arabicPronunciation:'Sik-keen',     hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/knife.oga',     arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/knife.oga' },
     { hausa:'Cokali',   arabic:'ملعقة', english:'Spoon',    pronunciation:'cho-KAH-lee',    arabicPronunciation:'Mil-a-qa',     hausaAudioSrc:'/audio/lesson-one/lesson-one-hausa/spoon.oga',   arabicAudioSrc:'/audio/lesson-one/lesson-one-arabic/spoon.oga' },
   ],
-  quiz: [
-    { id:'u1l4q1', question:'What is the Arabic word for "Book"?', options:['قلم','كتاب','طاولة','كرسي'], correctAnswer:1, explanation:'"كتاب" (Ki-taab) = Book. Note: Hausa borrowed "قلم" as "Alkalami"!' },
-    { id:'u1l4q2', question:'What does "سيارة" mean?', options:['House','Phone','Car','Water'], correctAnswer:2, explanation:'"سيارة" (Say-yaa-ra) = Car. Hausa: "Mota".' },
-    { id:'u1l4q3', question:'Which Arabic word means "Door"?', options:['نافذة','باب','منزل','سرير'], correctAnswer:1, explanation:'"باب" (Baab) = Door. Hausa: "Kofa". "نافذة" = Window.' },
-    { id:'u1l4q4', question:'What is "قلم" in English?', options:['Chair','Table','Book','Pen'], correctAnswer:3, explanation:'"قلم" (Qa-lam) = Pen. Hausa borrowed this as "Alkalami"!' },
-    { id:'u1l4q5', question:'What is the Arabic for "Shoe"?', options:['قبعة','قميص','بنطال','حذاء'], correctAnswer:3, explanation:'"حذاء" (Hi-dhaa) = Shoe. Hausa: "Takalmi".' },
-    { id:'u1l4q6', question:'What does "هاتف" mean?', options:['Water','Fan','Phone','Mirror'], correctAnswer:2, explanation:'"هاتف" (Haa-tif) = Phone. Hausa: "Waya".' },
-    { id:'u1l4q7', question:'Which Arabic word means Spoon?', options:['سكين','ملعقة','مروحة','مرآة'], correctAnswer:1, explanation:'"ملعقة" (Mil-a-qa) = Spoon. "سكين" = Knife.' },
-    { id:'u1l4q8', question:'What is the Arabic for "Window"?', options:['باب','نافذة','طاولة','كرسي'], correctAnswer:1, explanation:'"نافذة" (Naa-fi-dha) = Window. Hausa: "Taga".' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u1l4a1', type:'listen_identify', instruction:'Listen to the Arabic word. Select the Arabic word you heard.', targetWord:'كتاب', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/kitab.m4a', hausaAudioSrc:'/audio/hausa/littafi.m4a', options:['قلم','طاولة','كتاب','كرسي'], correctAnswer:2 },
     { id:'u1l4a2', type:'listen_identify', instruction:'Listen to this Arabic noun. Which one did you hear?', targetWord:'طعام', targetLanguage:'arabic', arabicAudioSrc:'/audio/arabic/taam.m4a', hausaAudioSrc:'/audio/hausa/abinci.m4a', options:['ماء','طعام','منزل','سرير'], correctAnswer:1 },
@@ -1145,15 +1112,7 @@ const familyLesson: Lesson = {
     { hausa:'Maraya',          arabic:'يتيم',      english:'Orphan',                       pronunciation:'mah-RAH-yah',        arabicPronunciation:'Ya-teem', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/orphan.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/orphan.oga'},
     { hausa:'Makwabci',        arabic:'جار',       english:'Neighbor',                     pronunciation:'mak-WAB-chee',       arabicPronunciation:'Jaar', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/niegbour.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/niegbour.oga'},
   ],
-  quiz: [
-    { id:'u2l1q1', question:'What is the Arabic word for "Uwa" (Mother)?', options:['أب','أم','أخ','جد'], correctAnswer:1, explanation:'"أم" (Umm) = Mother. Hausa: "Uwa / Mama".' },
-    { id:'u2l1q2', question:'What is the Arabic for "Kawu" (Uncle)?', options:['عم / خال','أخت','ابنة','جدة'], correctAnswer:0, explanation:'"عم / خال" (Amm / Khaal) = Uncle (paternal/maternal). Hausa: "Kawu".' },
-    { id:'u2l1q3', question:'Which Hausa word means "Son"?', options:["Ɗa","'Ya","Ɗan'uwa",'Miji'], correctAnswer:0, explanation:'"Ɗa" = Son = "ابن" (Ibn) in Arabic.' },
-    { id:'u2l1q4', question:'What does "\'Yar\'uwa" mean?', options:['Brother','Sister','Cousin','Aunt'], correctAnswer:1, explanation:'"\'Yar\'uwa" = Sister = "أخت" (Ukht).' },
-    { id:'u2l1q5', question:'"جد" in Arabic refers to which relative?', options:['Kaka','Kaka (na namiji)','Jikaci','Kawu'], correctAnswer:1, explanation:'"جد" (Jadd) = Grandfather. Hausa: "Kaka (na namiji)". "جدة" (Jad-da) is Grandmother.' },
-    { id:'u2l1q6', question:'What is the Arabic for "Iyali" (Family)?', options:['أسرة','بيت','أخ','أم'], correctAnswer:0, explanation:'"أسرة" (Us-ra) = Family. Hausa: "Iyali".' },
-    { id:'u2l1q7', question:'Which Hausa term means "Wife"?', options:['Miji','Mata','Sabiyi','Maraya'], correctAnswer:1, explanation:'"Mata" = Wife = "زوجة" (Zaw-ja). "Miji" = Husband = "زوج" (Zawj).' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u2l1a1', type:'listen_identify', instruction:'Listen to the Arabic word for a family member. Select what you heard.', targetWord:'أم', targetLanguage:'arabic', options:['أب','أم','أخ','جد'], correctAnswer:1 },
     { id:'u2l1a2', type:'listen_identify', instruction:'Listen to this Arabic word. Which relative does it describe?', targetWord:'أخت', targetLanguage:'arabic', options:['أخ','أخت','ابن','ابنة'], correctAnswer:1 },
@@ -1189,15 +1148,7 @@ const daysLesson: Lesson = {
     { hausa:'Kullum / Kowane rana', arabic:'كل يوم', english:'Every day',            pronunciation:'KOOL-loom / KO-wah-neh RAH-nah', arabicPronunciation:'Kul-la yawm', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/everyday.oga', arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/everyday.oga' },
     { hausa:'Kwana daya',        arabic:'بعد يوم',  english:'Day after / Next day',  pronunciation:'KWAH-nah DAH-yah',    arabicPronunciation:'Ba-da yawm', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/tomorrow.oga', arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/tomorrow.oga' },
   ],
-  quiz: [
-    { id:'u2l2q1', question:"The day after Jumma'a is which Hausa day?", options:['Asabar','Litinin','Lahadi','Talata'], correctAnswer:0, explanation:'"Asabar" (Saturday) comes right after "Jumma\'a" (Friday).' },
-    { id:'u2l2q2', question:'The day before Talata (Tuesday) is?', options:['Litinin','Laraba','Alhamis','Lahadi'], correctAnswer:0, explanation:'"Litinin" (Monday) comes right before "Talata" (Tuesday).' },
-    { id:'u2l2q3', question:'The first day of the week in Hausa is?', options:['Litinin','Lahadi','Asabar','Jumma\'a'], correctAnswer:1, explanation:'"Lahadi" (Sunday) is the first day of the week, corresponding to Arabic "الأحد" (Al-ahad).' },
-    { id:'u2l2q4', question:'Which Hausa word means "Thursday"?', options:['Laraba','Alhamis','Jumma\'a','Asabar'], correctAnswer:1, explanation:'"Alhamis" = Thursday = "الخميس" (Al-kha-mees).' },
-    { id:'u2l2q5', question:'"Tomorrow" in Hausa is?', options:['Jiya','Yau','Gobe','Bayan-gobe'], correctAnswer:2, explanation:'"Gobe" = Tomorrow = "غداً" (Gha-dan). "Bayan-gobe" is Day after tomorrow.' },
-    { id:'u2l2q6', question:'What is the Arabic for "Mako" (Week)?', options:['شهر','سنة','أسبوع','يوم'], correctAnswer:2, explanation:'"أسبوع" (Us-boo) = Week. Hausa: "Mako".' },
-    { id:'u2l2q7', question:'Which Hausa word means "Yesterday"?', options:['Jiya','Gobe','Yau','Kullum'], correctAnswer:0, explanation:'"Jiya" = Yesterday = "أمس" (Ams).' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u2l2a1', type:'listen_identify', instruction:'Listen to the Arabic day. Select the Arabic word you heard.', targetWord:'الجمعة', targetLanguage:'arabic', options:['الخميس','الجمعة','السبت','الأحد'], correctAnswer:1 },
     { id:'u2l2a2', type:'listen_identify', instruction:'Listen to this Arabic time word. Which one did you hear?', targetWord:'غداً', targetLanguage:'arabic', options:['أمس','اليوم','غداً','بعد غد'], correctAnswer:2 },
@@ -1237,15 +1188,7 @@ const verbsLesson: Lesson = {
     { hausa:'Hira (ina hira)',            arabic:'يتحدث / يتحادث', english:'Chat',        pronunciation:'HEE-rah',           arabicPronunciation:'Ya-ta-ha-dath' , hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/chat.oga', arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/chat.oga'},
     { hausa:'Daidaita (ina daidaitawa)',  arabic:'يصلح',        english:'Fix / Arrange',  pronunciation:'dye-DYE-tah',       arabicPronunciation:'Yus-lih' , hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/fix.oga', arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/fix.oga'},
   ],
-  quiz: [
-    { id:'u2l3q1', question:'Ina ___ (ci / tafiya) — "I am eating" — which verb fits?', options:['ci','tafiya','sha','gani'], correctAnswer:0, explanation:'"Ina ci" = I am eating. "يأكل" (Ya-kul) = Eat.' },
-    { id:'u2l3q2', question:'Ina ___ (magana / sha) — "I am drinking" — which verb fits?', options:['magana','sha','ji','yi'], correctAnswer:1, explanation:'"Ina sha" = I am drinking. "يشرب" (Yash-rab) = Drink.' },
-    { id:'u2l3q3', question:'Ina ___ (zuwa / karatu) — "I am reading" — which verb fits?', options:['zuwa','karatu','tashi','wanka'], correctAnswer:1, explanation:'"Ina karatu" = I am reading. "يقرأ" (Yaq-ra) = Read.' },
-    { id:'u2l3q4', question:'Ina ___ (aiki / koyo) — "I am learning" — which verb fits?', options:['aiki','koyo','koyar','hira'], correctAnswer:1, explanation:'"Ina koyo" = I am learning. "يتعلم" (Ya-ta-al-lam) = Learn.' },
-    { id:'u2l3q5', question:'Ina ___ (rubuta / gani) — "I am writing" — which verb fits?', options:['rubuta','gani','ji','saiya'], correctAnswer:0, explanation:'"Ina rubutu" = I am writing. "يكتب" (Yak-tub) = Write.' },
-    { id:'u2l3q6', question:'What is the Arabic for "Karanta" (Read)?', options:['يكتب','يقرأ','يسمع','يشتري'], correctAnswer:1, explanation:'"يقرأ" (Yaq-ra) = Read. Hausa: "Karanta".' },
-    { id:'u2l3q7', question:'What does "Wanka" mean?', options:['Sleep','Bathe','Wake up','Work'], correctAnswer:1, explanation:'"Wanka" = Bathe = "يستحم" (Yas-ta-him).' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u2l3a1', type:'listen_identify', instruction:'Listen to the Arabic verb. Select the Arabic word you heard.', targetWord:'يشرب', targetLanguage:'arabic', options:['يأكل','يشرب','يذهب','يأتي'], correctAnswer:1 },
     { id:'u2l3a2', type:'listen_identify', instruction:'Listen to this Arabic verb. Which one did you hear?', targetWord:'يكتب', targetLanguage:'arabic', options:['يقرأ','يكتب','يتكلم','يشتري'], correctAnswer:1 },
@@ -1289,18 +1232,7 @@ const conversationsLesson: Lesson = {
     { hausa:"A'a, talatin.",                  arabic:'لا، 30.',                 english:'No, 30.',                             pronunciation:"A'a, talatin.", hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/no 30.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/no 30.oga'},
     { hausa:'Nagode. Zan dawo.',              arabic:'شكراً. سأعود لاحقاً.',    english:"Thanks. I'll come back.",             pronunciation:'Nagode. Zan dawo.', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/come back.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/thats good.oga'},
   ],
-  quiz: [
-    { id:'u2l4q1', question:'Translate "Ina zuwa gida" to Arabic.', options:['أنا أذهب إلى المنزل','أنا آكل الطعام','أنا أشرب الماء','أنا أتعلم'], correctAnswer:0, explanation:'"Ina zuwa gida" = "I am going home" = "أنا أذهب إلى المنزل".' },
-    { id:'u2l4q2', question:'Translate "Muna cin abinci" to Arabic.', options:['نحن نأكل الطعام','نحن نذهب','نحن نتعلم','نحن نشرب'], correctAnswer:0, explanation:'"Muna cin abinci" = "We are eating food" = "نحن نأكل الطعام".' },
-    { id:'u2l4q3', question:'Translate "Suna tafiya kasuwa" to Arabic.', options:['هم يذهبون إلى السوق','هم يأكلون','هم ينامون','هم يقرأون'], correctAnswer:0, explanation:'"Suna tafiya kasuwa" = "They are going to the market" = "هم يذهبون إلى السوق".' },
-    { id:'u2l4q4', question:'Translate "Kana karatu?" to Arabic.', options:['هل تقرأ؟','هل تأكل؟','هل تذهب؟','هل تشرب؟'], correctAnswer:0, explanation:'"Kana karatu?" = "Are you reading?" = "هل تقرأ؟".' },
-    { id:'u2l4q5', question:'Translate "Ba na sha ruwa" to Arabic.', options:['لا أشرب الماء','أنا أشرب الماء','لا آكل الطعام','أنا لا أذهب'], correctAnswer:0, explanation:'"Ba na sha ruwa" = "I am not drinking water" = "لا أشرب الماء".' },
-    { id:'u2l4q6', question:'What does "Yaya kake?" mean?', options:["What's your name?",'How are you?','Where are you from?','Goodbye'], correctAnswer:1, explanation:'"Yaya kake?" = "How are you?", equivalent to "كيف حالك؟".' },
-    { id:'u2l4q7', question:'What does "Ina jin yunwa" mean?', options:['I am thirsty','I am tired','I am hungry','I am full'], correctAnswer:2, explanation:'"Ina jin yunwa" = "I am hungry" = "أنا جائع".' },
-    { id:'u2l4q8', question:'What does "Ya yi tsada" mean?', options:["It's cheap","It's expensive","It's beautiful","It's small"], correctAnswer:1, explanation:'"Ya yi tsada" = "It\'s expensive" = "غالي", used when bargaining at the market.' },
-    { id:'u2l4q9', question:'What does "Sai gobe" mean?', options:['See you tomorrow','See you later','Good night','Goodbye'], correctAnswer:0, explanation:'"Sai gobe" = "See you tomorrow" = "إلى الغد".' },
-    { id:'u2l4q10', question:'What does "Nagode sosai" mean?', options:["You're welcome",'Thank you','Thank you very much','Please'], correctAnswer:2, explanation:'"Nagode sosai" = "Thank you very much" = "شكراً جزيلاً".' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u2l4a1', type:'listen_identify', instruction:'Listen to the Arabic greeting from Conversation 1. Select the Arabic phrase you heard.', targetWord:'مرحباً، كيف حالك؟', targetLanguage:'arabic', options:['مرحباً، كيف حالك؟','شكراً. سأعود لاحقاً.','أنا هنا. ماذا تريد؟','من أين أنت؟'], correctAnswer:0 },
     { id:'u2l4a2', type:'listen_identify', instruction:'Listen to this line from Conversation 2 (At Home). Which one did you hear?', targetWord:'أنا جائع. ماذا سنأكل؟', targetLanguage:'arabic', options:['أنا هنا. ماذا تريد؟','أنا جائع. ماذا سنأكل؟','تعال نأكل.','هذا جيد.'], correctAnswer:1 },
@@ -1338,15 +1270,7 @@ const grammarLesson: Lesson = {
     { hausa:'Yaushe?',    arabic:'متى؟',  english:'When?',              pronunciation:'YOW-sheh',      arabicPronunciation:'Ma-taa', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/who.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/niegbour.oga'},
     { hausa:'Wane?',      arabic:'أي؟',   english:'Which?',             pronunciation:'WAH-neh',       arabicPronunciation:'Ay-yu', hausaAudioSrc:'/audio/lesson-two/lesson-two-hausa/where.oga',     arabicAudioSrc:'/audio/lesson-two/lesson-two-arabic/niegbour.oga'},
   ],
-  quiz: [
-    { id:'u2l5q1', question:'What is the Arabic for "Ni" (I)?', options:['أنا','أنت','هو','نحن'], correctAnswer:0, explanation:'"أنا" (A-na) = I. Hausa: "Ni".' },
-    { id:'u2l5q2', question:'Which Hausa pronoun means "They"?', options:['Mu','Ku','Su','Shi'], correctAnswer:2, explanation:'"Su" = They = "هم" (Hum).' },
-    { id:'u2l5q3', question:'How do you say "I am not eating" in Hausa?', options:['Ba na ci','Ina ci','Kana ci','Muna ci'], correctAnswer:0, explanation:'Hausa negation adds "Ba" before the pronoun: "Ba na ci" = "I am not eating" = "لا آكل".' },
-    { id:'u2l5q4', question:'What does "Ina?" mean as a question word?', options:['What?','Where?','When?','Who?'], correctAnswer:1, explanation:'"Ina?" = "Where?" = "أين؟" (Ay-na).' },
-    { id:'u2l5q5', question:'"لماذا؟" corresponds to which Hausa question word?', options:['Me?','Don me?','Nawa?','Yaushe?'], correctAnswer:1, explanation:'"لماذا؟" (Li-maa-dhaa) = "Why?" = Hausa "Don me?".' },
-    { id:'u2l5q6', question:'What is the correct present-tense form for "She is eating" in Hausa?', options:['Yana ci','Tana ci','Kina ci','Muna ci'], correctAnswer:1, explanation:'"Tana ci" = "She is eating" = "هي تأكل". "Yana ci" is used for "He is eating".' },
-    { id:'u2l5q7', question:'Which sentence structure does Hausa follow, like Arabic?', options:['SOV','VSO','SVO','OVS'], correctAnswer:2, explanation:'Both Hausa and Arabic typically follow Subject + Verb + Object (SVO) word order.' },
-  ],
+  quiz: [],
   audioExercises: [
     { id:'u2l5a1', type:'listen_identify', instruction:'Listen to the Arabic pronoun. Select the Arabic word you heard.', targetWord:'نحن', targetLanguage:'arabic', options:['أنا','أنت','نحن','هم'], correctAnswer:2 },
     { id:'u2l5a2', type:'listen_identify', instruction:'Listen to this Arabic question word. Which one did you hear?', targetWord:'متى؟', targetLanguage:'arabic', options:['أين؟','متى؟','كيف؟','من؟'], correctAnswer:1 },
@@ -1355,6 +1279,122 @@ const grammarLesson: Lesson = {
     { id:'u2l5a5', type:'match_pairs', instruction:'Match each Hausa pronoun to its Arabic equivalent.', pairs:[{left:'Ni',right:'أنا'},{left:'Shi',right:'هو'},{left:'Ita',right:'هي'},{left:'Mu',right:'نحن'},{left:'Su',right:'هم'}] },
   ],
 };
+
+
+// ─────────────────────────────────────────
+// HAUSA → ARABIC LESSON QUIZZES
+// Every active quiz question is written in Hausa.
+// Every answer choice is Arabic, so the quiz tests Arabic directly.
+// Each unique Hausa/Arabic vocabulary pair taught in the lesson is tested.
+// ─────────────────────────────────────────
+
+function buildHausaToArabicQuiz(
+  prefix: string,
+  vocabulary: VocabularyItem[],
+): QuizQuestion[] {
+  // Remove exact duplicate Hausa/Arabic pairs so learners are not asked
+  // the same question twice.
+  const uniqueItems = vocabulary.filter((item, index, items) => {
+    const key = `${item.hausa.trim()}|||${item.arabic.trim()}`;
+
+    return (
+      items.findIndex(
+        (candidate) =>
+          `${candidate.hausa.trim()}|||${candidate.arabic.trim()}` === key,
+      ) === index
+    );
+  });
+
+  const uniqueArabic = Array.from(
+    new Set(
+      uniqueItems
+        .map((item) => item.arabic.trim())
+        .filter(Boolean),
+    ),
+  );
+
+  return uniqueItems.map((item, index) => {
+    const correctArabic = item.arabic.trim();
+
+    const distractors = uniqueArabic
+      .filter((choice) => choice !== correctArabic)
+      .slice(index % Math.max(1, uniqueArabic.length - 1))
+      .concat(
+        uniqueArabic
+          .filter((choice) => choice !== correctArabic)
+          .slice(0, index % Math.max(1, uniqueArabic.length - 1)),
+      )
+      .slice(0, 3);
+
+    // All current lessons contain enough unique Arabic vocabulary for
+    // four-option questions. This fallback keeps the function safe if
+    // a very small lesson is added later.
+    const fallbackChoices = ["—", "•••", "…"];
+    while (distractors.length < 3) {
+      distractors.push(fallbackChoices[distractors.length]);
+    }
+
+    // Rotate the correct answer position so it is not always in the
+    // same place.
+    const correctAnswer = index % 4;
+    const options = [...distractors];
+    options.splice(correctAnswer, 0, correctArabic);
+
+    return {
+      id: `${prefix}q${index + 1}`,
+      question: `Yaya ake cewa "${item.hausa}" da Larabci?`,
+      options,
+      correctAnswer,
+      explanation:
+        `"${correctArabic}" ita ce fassarar Larabci ta "${item.hausa}" a wannan darasin.`,
+    };
+  });
+}
+
+greetingsLesson.quiz = buildHausaToArabicQuiz(
+  "u1l1",
+  greetingsLesson.vocabulary,
+);
+
+numbersLesson.quiz = buildHausaToArabicQuiz(
+  "u1l2",
+  numbersLesson.vocabulary,
+);
+
+colorsLesson.quiz = buildHausaToArabicQuiz(
+  "u1l3",
+  colorsLesson.vocabulary,
+);
+
+nounsLesson.quiz = buildHausaToArabicQuiz(
+  "u1l4",
+  nounsLesson.vocabulary,
+);
+
+familyLesson.quiz = buildHausaToArabicQuiz(
+  "u2l1",
+  familyLesson.vocabulary,
+);
+
+daysLesson.quiz = buildHausaToArabicQuiz(
+  "u2l2",
+  daysLesson.vocabulary,
+);
+
+verbsLesson.quiz = buildHausaToArabicQuiz(
+  "u2l3",
+  verbsLesson.vocabulary,
+);
+
+conversationsLesson.quiz = buildHausaToArabicQuiz(
+  "u2l4",
+  conversationsLesson.vocabulary,
+);
+
+grammarLesson.quiz = buildHausaToArabicQuiz(
+  "u2l5",
+  grammarLesson.vocabulary,
+);
 
 // ─────────────────────────────────────────
 // UNITS EXPORT
